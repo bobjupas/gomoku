@@ -31,12 +31,19 @@ jobs:
           pip install --upgrade pip wheel
           pip install cython==0.29.36 buildozer
 
-      - name: Accept Android SDK licenses
+      - name: Pre-install Android SDK command-line tools & licenses
         run: |
           SDK_ROOT="$HOME/.buildozer/android/platform/android-sdk"
-          mkdir -p "$SDK_ROOT/licenses"
+          mkdir -p "$SDK_ROOT/licenses" "$SDK_ROOT/cmdline-tools"
           printf "8933bad161af4178b1185d1a37fbf41ea5269c55\n24333f8a63b6825ea9c5514f83c2829b004d1fee\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "$SDK_ROOT/licenses/android-sdk-license"
           printf "84831b9409646a918e30573bab4c9c91346d8abd" > "$SDK_ROOT/licenses/android-sdk-preview-license"
+          curl -sL -o /tmp/clt.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip -q /tmp/clt.zip -d "$SDK_ROOT/cmdline-tools"
+          mv "$SDK_ROOT/cmdline-tools/cmdline-tools" "$SDK_ROOT/cmdline-tools/latest"
+          mkdir -p "$SDK_ROOT/tools/bin"
+          printf '#!/bin/bash\nexec "%s/cmdline-tools/latest/bin/sdkmanager" "$@"\n' "$SDK_ROOT" > "$SDK_ROOT/tools/bin/sdkmanager"
+          chmod +x "$SDK_ROOT/tools/bin/sdkmanager"
+          yes | "$SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$SDK_ROOT" --licenses > /dev/null || true
 
       - name: Build APK
         working-directory: android
