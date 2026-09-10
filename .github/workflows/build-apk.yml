@@ -31,6 +31,11 @@ jobs:
           pip install --upgrade pip wheel
           pip install cython==0.29.36 buildozer
 
+      - name: Accept Android SDK licenses
+        run: |
+          mkdir -p ~/.buildozer/android/platform/licenses
+          printf "8933bad161af4178b1185d1a37fbf41ea5269c55\n24333f8a63b6825ea9c5514f83c2829b004d1fee\nd56f5187479451eabf01fb78af6dfcb131a6481e" > ~/.buildozer/android/platform/licenses/android-sdk-license
+
       - name: Build APK
         working-directory: android
         env:
