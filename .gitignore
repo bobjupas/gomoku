@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# PyInstaller 打包产物与中间文件
+build/
+dist/
+*.spec
+
+# Buildozer 构建产物
+android/bin/
+android/.buildozer/
+
+# 系统
+Thumbs.db
+.DS_Store
