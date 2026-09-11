@@ -5,7 +5,8 @@ package.domain = org.zcode.gomoku
 source.dir = .
 source.include_exts = py,png,jpg,kv,ttf
 version = 1.0.0
-requirements = python3,kivy
+requirements = python3,kivy==2.3.0
+p4a.branch = 2024.10.1
 orientation = portrait
 fullscreen = 0
 android.api = 34
